@@ -27,9 +27,10 @@ function SearchComponent() {
     const fetchCompanies = async () => {
       try {
         const response = await axios.get('http://localhost:8000/api/v1/financial-statements/companies');
+        console.log('API response:', response.data);
         setCompanies(response.data);
       } catch (error) {
-        console.error('Error fetching companies:', error);
+        console.error('Error fetching companies:', error.response ? error.response.data : error.message);
         setError('기업 목록을 불러오는데 실패했습니다.');
       }
     };

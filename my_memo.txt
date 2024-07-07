@@ -12,3 +12,4 @@
 < 명령어 >
 백엔드 서버 실행 : 백엔드 디렉토리/uvicorn main:app --reload
 프론트 서버 실행 : 프론트 디렉토리/npm start
+postgreSQL : superuser (postgres) / 남궁재우1@
