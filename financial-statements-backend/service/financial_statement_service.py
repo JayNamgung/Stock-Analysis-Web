@@ -10,7 +10,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-API_KEY = "b9308d1527b7af4c8b5235f270ccef6779e2568f"
+API_KEY = ""
 BASE_URL = "https://opendart.fss.or.kr/api"
 
 class FinancialStatementService:
