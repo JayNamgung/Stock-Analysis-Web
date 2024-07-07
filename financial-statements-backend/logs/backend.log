@@ -1,0 +1,184 @@
+2024-07-08 01:55:49,410 - router.company_router - INFO - Fetching company list
+2024-07-08 01:55:49,411 - router.company_router - ERROR - Error fetching company list: type object 'CompanyService' has no attribute 'get_company_list'
+Traceback (most recent call last):
+  File "D:\Programs\GitHub_Files\Stock-Analysis-Web\financial-statements-backend\router\company_router.py", line 16, in get_companies
+    companies = CompanyService.get_company_list()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: type object 'CompanyService' has no attribute 'get_company_list'
+2024-07-08 01:58:15,836 - router.company_router - INFO - Updating company list
+2024-07-08 01:58:17,700 - router.company_router - ERROR - Error updating company list: CompanyService._save_to_db() missing 1 required positional argument: 'companies'
+Traceback (most recent call last):
+  File "D:\Programs\GitHub_Files\Stock-Analysis-Web\financial-statements-backend\router\company_router.py", line 27, in update_companies
+    updated_count = CompanyService.update_company_list()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Programs\GitHub_Files\Stock-Analysis-Web\financial-statements-backend\service\company_service.py", line 45, in update_company_list
+    cls._save_to_db(companies)
+TypeError: CompanyService._save_to_db() missing 1 required positional argument: 'companies'
+2024-07-08 01:59:52,914 - router.company_router - INFO - Updating company list
+2024-07-08 01:59:54,784 - router.company_router - ERROR - Error updating company list: CompanyService._save_to_db() missing 1 required positional argument: 'companies'
+Traceback (most recent call last):
+  File "D:\Programs\GitHub_Files\Stock-Analysis-Web\financial-statements-backend\router\company_router.py", line 27, in update_companies
+    updated_count = CompanyService.update_company_list()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Programs\GitHub_Files\Stock-Analysis-Web\financial-statements-backend\service\company_service.py", line 48, in update_company_list
+    cls._save_to_db(companies)
+TypeError: CompanyService._save_to_db() missing 1 required positional argument: 'companies'
+2024-07-08 02:00:22,174 - router.company_router - INFO - Updating company list
+2024-07-08 02:00:24,097 - service.company_service - INFO - ======================================
+2024-07-08 02:00:26,710 - service.company_service - INFO - ======================================
+2024-07-08 02:00:26,714 - router.company_router - ERROR - Error updating company list: CompanyService._save_to_db() missing 1 required positional argument: 'companies'
+Traceback (most recent call last):
+  File "D:\Programs\GitHub_Files\Stock-Analysis-Web\financial-statements-backend\router\company_router.py", line 27, in update_companies
+    updated_count = CompanyService.update_company_list()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Programs\GitHub_Files\Stock-Analysis-Web\financial-statements-backend\service\company_service.py", line 51, in update_company_list
+    cls._save_to_db(companies)
+TypeError: CompanyService._save_to_db() missing 1 required positional argument: 'companies'
+2024-07-08 02:04:16,633 - router.company_router - INFO - Updating company list
+2024-07-08 02:04:18,463 - service.company_service - INFO - ======================================
+2024-07-08 02:04:21,141 - service.company_service - INFO - ======================================
+2024-07-08 02:04:21,218 - router.company_router - ERROR - Error updating company list: 오류:  public 스키마(schema) 접근 권한 없음
+LINE 2:             CREATE TABLE IF NOT EXISTS companies (
+                                               ^
+Traceback (most recent call last):
+  File "D:\Programs\GitHub_Files\Stock-Analysis-Web\financial-statements-backend\router\company_router.py", line 27, in update_companies
+    updated_count = CompanyService.update_company_list()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Programs\GitHub_Files\Stock-Analysis-Web\financial-statements-backend\service\company_service.py", line 51, in update_company_list
+    cls._save_to_db(companies)
+  File "D:\Programs\GitHub_Files\Stock-Analysis-Web\financial-statements-backend\service\company_service.py", line 59, in _save_to_db
+    cur.execute("""
+psycopg2.errors.InsufficientPrivilege: 오류:  public 스키마(schema) 접근 권한 없음
+LINE 2:             CREATE TABLE IF NOT EXISTS companies (
+                                               ^
+
+2024-07-08 02:10:23,729 - router.company_router - INFO - Updating company list
+2024-07-08 02:10:23,730 - service.company_service - INFO - 회사 목록 업데이트 시작
+2024-07-08 02:10:24,002 - service.company_service - INFO - DART API로부터 데이터 성공적으로 받아옴
+2024-07-08 02:10:25,606 - service.company_service - INFO - 107237개의 회사 정보 파싱 완료
+2024-07-08 02:10:25,676 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 02:10:25,678 - service.company_service - ERROR - 데이터베이스 작업 중 오류 발생: 오류:  public 스키마(schema) 접근 권한 없음
+LINE 2:                 CREATE TABLE IF NOT EXISTS companies (
+                                                   ^
+
+2024-07-08 02:10:25,679 - service.company_service - INFO - 데이터베이스 연결 종료
+2024-07-08 02:10:25,679 - service.company_service - ERROR - 회사 목록 업데이트 중 오류 발생: 오류:  public 스키마(schema) 접근 권한 없음
+LINE 2:                 CREATE TABLE IF NOT EXISTS companies (
+                                                   ^
+
+2024-07-08 02:10:25,680 - router.company_router - ERROR - Error updating company list: 오류:  public 스키마(schema) 접근 권한 없음
+LINE 2:                 CREATE TABLE IF NOT EXISTS companies (
+                                                   ^
+Traceback (most recent call last):
+  File "D:\Programs\GitHub_Files\Stock-Analysis-Web\financial-statements-backend\router\company_router.py", line 27, in update_companies
+    updated_count = CompanyService.update_company_list()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Programs\GitHub_Files\Stock-Analysis-Web\financial-statements-backend\service\company_service.py", line 58, in update_company_list
+    cls._save_to_db(companies)
+  File "D:\Programs\GitHub_Files\Stock-Analysis-Web\financial-statements-backend\service\company_service.py", line 71, in _save_to_db
+    cur.execute("""
+psycopg2.errors.InsufficientPrivilege: 오류:  public 스키마(schema) 접근 권한 없음
+LINE 2:                 CREATE TABLE IF NOT EXISTS companies (
+                                                   ^
+
+2024-07-08 02:13:07,944 - router.company_router - INFO - Updating company list
+2024-07-08 02:13:07,944 - service.company_service - INFO - 회사 목록 업데이트 시작
+2024-07-08 02:13:08,209 - service.company_service - INFO - DART API로부터 데이터 성공적으로 받아옴
+2024-07-08 02:13:09,966 - service.company_service - INFO - 107237개의 회사 정보 파싱 완료
+2024-07-08 02:13:10,037 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 02:13:10,039 - service.company_service - ERROR - 데이터베이스 작업 중 오류 발생: 오류:  public 스키마(schema) 접근 권한 없음
+LINE 2:                 CREATE TABLE IF NOT EXISTS companies (
+                                                   ^
+
+2024-07-08 02:13:10,040 - service.company_service - INFO - 데이터베이스 연결 종료
+2024-07-08 02:13:10,040 - service.company_service - ERROR - 회사 목록 업데이트 중 오류 발생: 오류:  public 스키마(schema) 접근 권한 없음
+LINE 2:                 CREATE TABLE IF NOT EXISTS companies (
+                                                   ^
+
+2024-07-08 02:13:10,041 - router.company_router - ERROR - Error updating company list: 오류:  public 스키마(schema) 접근 권한 없음
+LINE 2:                 CREATE TABLE IF NOT EXISTS companies (
+                                                   ^
+Traceback (most recent call last):
+  File "D:\Programs\GitHub_Files\Stock-Analysis-Web\financial-statements-backend\router\company_router.py", line 27, in update_companies
+    updated_count = CompanyService.update_company_list()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Programs\GitHub_Files\Stock-Analysis-Web\financial-statements-backend\service\company_service.py", line 58, in update_company_list
+    cls._save_to_db(companies)
+  File "D:\Programs\GitHub_Files\Stock-Analysis-Web\financial-statements-backend\service\company_service.py", line 71, in _save_to_db
+    cur.execute("""
+psycopg2.errors.InsufficientPrivilege: 오류:  public 스키마(schema) 접근 권한 없음
+LINE 2:                 CREATE TABLE IF NOT EXISTS companies (
+                                                   ^
+
+2024-07-08 02:14:10,155 - router.company_router - INFO - Updating company list
+2024-07-08 02:14:10,155 - service.company_service - INFO - 회사 목록 업데이트 시작
+2024-07-08 02:14:10,418 - service.company_service - INFO - DART API로부터 데이터 성공적으로 받아옴
+2024-07-08 02:14:12,076 - service.company_service - INFO - 107237개의 회사 정보 파싱 완료
+2024-07-08 02:14:12,148 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 02:14:12,151 - service.company_service - ERROR - 데이터베이스 작업 중 오류 발생: 오류:  public 스키마(schema) 접근 권한 없음
+LINE 2:                 CREATE TABLE IF NOT EXISTS companies (
+                                                   ^
+
+2024-07-08 02:14:12,151 - service.company_service - INFO - 데이터베이스 연결 종료
+2024-07-08 02:14:12,152 - service.company_service - ERROR - 회사 목록 업데이트 중 오류 발생: 오류:  public 스키마(schema) 접근 권한 없음
+LINE 2:                 CREATE TABLE IF NOT EXISTS companies (
+                                                   ^
+
+2024-07-08 02:14:12,152 - router.company_router - ERROR - Error updating company list: 오류:  public 스키마(schema) 접근 권한 없음
+LINE 2:                 CREATE TABLE IF NOT EXISTS companies (
+                                                   ^
+Traceback (most recent call last):
+  File "D:\Programs\GitHub_Files\Stock-Analysis-Web\financial-statements-backend\router\company_router.py", line 27, in update_companies
+    updated_count = CompanyService.update_company_list()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Programs\GitHub_Files\Stock-Analysis-Web\financial-statements-backend\service\company_service.py", line 58, in update_company_list
+    cls._save_to_db(companies)
+  File "D:\Programs\GitHub_Files\Stock-Analysis-Web\financial-statements-backend\service\company_service.py", line 71, in _save_to_db
+    cur.execute("""
+psycopg2.errors.InsufficientPrivilege: 오류:  public 스키마(schema) 접근 권한 없음
+LINE 2:                 CREATE TABLE IF NOT EXISTS companies (
+                                                   ^
+
+2024-07-08 02:14:52,015 - router.company_router - INFO - Updating company list
+2024-07-08 02:14:52,016 - service.company_service - INFO - 회사 목록 업데이트 시작
+2024-07-08 02:14:52,287 - service.company_service - INFO - DART API로부터 데이터 성공적으로 받아옴
+2024-07-08 02:14:53,923 - service.company_service - INFO - 107237개의 회사 정보 파싱 완료
+2024-07-08 02:14:54,004 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 02:14:54,007 - service.company_service - ERROR - 데이터베이스 작업 중 오류 발생: 오류:  public 스키마(schema) 접근 권한 없음
+LINE 2:                 CREATE TABLE IF NOT EXISTS companies (
+                                                   ^
+
+2024-07-08 02:14:54,008 - service.company_service - INFO - 데이터베이스 연결 종료
+2024-07-08 02:14:54,008 - service.company_service - ERROR - 회사 목록 업데이트 중 오류 발생: 오류:  public 스키마(schema) 접근 권한 없음
+LINE 2:                 CREATE TABLE IF NOT EXISTS companies (
+                                                   ^
+
+2024-07-08 02:14:54,009 - router.company_router - ERROR - Error updating company list: 오류:  public 스키마(schema) 접근 권한 없음
+LINE 2:                 CREATE TABLE IF NOT EXISTS companies (
+                                                   ^
+Traceback (most recent call last):
+  File "D:\Programs\GitHub_Files\Stock-Analysis-Web\financial-statements-backend\router\company_router.py", line 27, in update_companies
+    updated_count = CompanyService.update_company_list()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Programs\GitHub_Files\Stock-Analysis-Web\financial-statements-backend\service\company_service.py", line 59, in update_company_list
+    cls._save_to_db(companies)
+  File "D:\Programs\GitHub_Files\Stock-Analysis-Web\financial-statements-backend\service\company_service.py", line 72, in _save_to_db
+    cur.execute("""
+psycopg2.errors.InsufficientPrivilege: 오류:  public 스키마(schema) 접근 권한 없음
+LINE 2:                 CREATE TABLE IF NOT EXISTS companies (
+                                                   ^
+
+2024-07-08 02:17:02,876 - router.company_router - INFO - Updating company list
+2024-07-08 02:17:02,876 - service.company_service - INFO - 회사 목록 업데이트 시작
+2024-07-08 02:17:03,165 - service.company_service - INFO - DART API로부터 데이터 성공적으로 받아옴
+2024-07-08 02:17:04,795 - service.company_service - INFO - 107237개의 회사 정보 파싱 완료
+2024-07-08 02:17:04,867 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 02:17:04,898 - service.company_service - INFO - companies 테이블 생성 또는 확인 완료
+2024-07-08 02:17:15,986 - service.company_service - INFO - 107237개의 회사 정보 입력/업데이트 완료
+2024-07-08 02:17:15,989 - service.company_service - INFO - 데이터베이스 변경사항 커밋 완료
+2024-07-08 02:17:15,990 - service.company_service - INFO - 데이터베이스 연결 종료
+2024-07-08 02:17:15,990 - service.company_service - INFO - 회사 목록 업데이트 완료
+2024-07-08 02:17:16,038 - router.company_router - INFO - Successfully updated company list. 107237 companies processed.
+2024-07-08 02:17:16,068 - router.company_router - INFO - Fetching company list
+2024-07-08 02:17:16,149 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 02:17:16,227 - router.company_router - INFO - Successfully fetched 107237 companies

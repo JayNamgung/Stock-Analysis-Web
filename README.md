@@ -5,3 +5,6 @@
 
 ## Frontend
 <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" alt="React" width="200"/>
+
+## Database
+<img src="https://wiki.postgresql.org/images/a/a4/PostgreSQL_logo.3colors.svg" alt="PostgreSQL" width="200"/>

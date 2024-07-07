@@ -9,7 +9,12 @@
 
 
 
-< 명령어 >
+< 서버 관리 >
 백엔드 서버 실행 : 백엔드 디렉토리/uvicorn main:app --reload
 프론트 서버 실행 : 프론트 디렉토리/npm start
-postgreSQL : superuser (postgres) / 남궁재우1@
+
+
+< DB 관리 >
+[ postgreSQL ]
+    postgres(superuser) / 남궁재우1@ : psql -U postgres
+    stock_analysis / 남궁재우1@ : psql -U stock_analysis -d stock_analysis_db

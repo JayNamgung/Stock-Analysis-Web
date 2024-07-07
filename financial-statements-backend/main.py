@@ -5,11 +5,26 @@ from fastapi.middleware.cors import CORSMiddleware
 from router.financial_statement_router import router as financial_statement_router
 from router.company_router import router as company_router
 import logging
+from logging.handlers import RotatingFileHandler
+import os
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = FastAPI()
+
+# 로그 디렉토리 생성
+log_dir = "logs"
+os.makedirs(log_dir, exist_ok=True)
+
+# 로깅 설정
+log_file = os.path.join(log_dir, "backend.log")
+logging.basicConfig(level=logging.INFO)
+file_handler = RotatingFileHandler(log_file, maxBytes=10*1024*1024, backupCount=5)
+file_handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+
+# root logger에 파일 핸들러 추가
+logging.getLogger('').addHandler(file_handler)
 
 # CORS 미들웨어 설정
 app.add_middleware(

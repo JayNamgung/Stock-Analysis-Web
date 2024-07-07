@@ -1,11 +1,14 @@
 import React from 'react';
-import SearchComponent from './features/search/SearchComponent';
+import { MantineProvider } from '@mantine/core';
+import CompanyManagement from './features/company/CompanyManagement';
 
 function App() {
   return (
-    <div className="App">
-      <SearchComponent />
-    </div>
+    <MantineProvider withGlobalStyles withNormalizeCSS>
+      <div className="App">
+        <CompanyManagement />
+      </div>
+    </MantineProvider>
   );
 }
 

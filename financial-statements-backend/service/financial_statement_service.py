@@ -16,7 +16,7 @@ class FinancialStatementService:
     def get_api_key():
         return load_api_key("OPEN_DART_API_KEY")
 
-    @staticmethod
+    @classmethod
     def get_financial_statement(cls, corp_code: str, bsns_year: str, reprt_code: str, fs_div: str) -> Dict:
         url = f"{BASE_URL}/fnlttSinglAcntAll.json"
         params = {

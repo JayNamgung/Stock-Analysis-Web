@@ -1,0 +1,9 @@
+{
+    "postgresql": {
+        "dbname": "stock_analysis_db",
+        "user": "stock_analysis",
+        "password": "skarndwodn1@",
+        "host": "localhost",
+        "port": 5432
+    }
+}
