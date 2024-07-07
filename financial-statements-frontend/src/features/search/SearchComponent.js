@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 function SearchComponent() {
@@ -10,6 +10,7 @@ function SearchComponent() {
   const [result, setResult] = useState(null);
   const [error, setError] = useState('');
   const [companies, setCompanies] = useState([]);
+  const [isLoadingCompanies, setIsLoadingCompanies] = useState(false);
 
   const reprtCodeOptions = [
     { value: '11013', label: '1분기보고서' },
@@ -23,20 +24,19 @@ function SearchComponent() {
     return { value: year.toString(), label: year.toString() };
   });
 
-  useEffect(() => {
-    const fetchCompanies = async () => {
-      try {
-        const response = await axios.get('http://localhost:8000/api/v1/financial-statements/companies');
-        console.log('API response:', response.data);
-        setCompanies(response.data);
-      } catch (error) {
-        console.error('Error fetching companies:', error.response ? error.response.data : error.message);
-        setError('기업 목록을 불러오는데 실패했습니다.');
-      }
-    };
-
-    fetchCompanies();
-  }, []);
+  const fetchCompanies = async () => {
+    if (companies.length > 0) return; // 이미 회사 목록이 있다면 다시 불러오지 않음
+    setIsLoadingCompanies(true);
+    try {
+      const response = await axios.get('http://localhost:8000/api/v1/financial-statements/companies');
+      console.log('API response:', response.data);
+      setCompanies(response.data);
+    } catch (error) {
+      console.error('Error fetching companies:', error.response ? error.response.data : error.message);
+      setError('기업 목록을 불러오는데 실패했습니다.');
+    }
+    setIsLoadingCompanies(false);
+  };
 
   const handleCompanyChange = (e) => {
     const selectedCompany = companies.find(company => company.name === e.target.value);
@@ -77,11 +77,16 @@ function SearchComponent() {
       <select
         value={companyName}
         onChange={handleCompanyChange}
+        onClick={fetchCompanies}
       >
         <option value="">기업을 선택하세요</option>
-        {companies.map(company => (
-          <option key={company.code} value={company.name}>{company.name}</option>
-        ))}
+        {isLoadingCompanies ? (
+          <option disabled>로딩 중...</option>
+        ) : (
+          companies.map(company => (
+            <option key={company.code} value={company.name}>{company.name}</option>
+          ))
+        )}
       </select>
       <select
         value={bsnsYear}

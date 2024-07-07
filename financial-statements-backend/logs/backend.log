@@ -182,3 +182,35 @@ LINE 2:                 CREATE TABLE IF NOT EXISTS companies (
 2024-07-08 02:17:16,068 - router.company_router - INFO - Fetching company list
 2024-07-08 02:17:16,149 - service.company_service - INFO - 데이터베이스 연결 성공
 2024-07-08 02:17:16,227 - router.company_router - INFO - Successfully fetched 107237 companies
+2024-07-08 02:20:21,306 - router.company_router - INFO - Fetching company list
+2024-07-08 02:20:21,371 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 02:20:21,435 - router.company_router - INFO - Successfully fetched 107237 companies
+2024-07-08 02:20:22,131 - router.company_router - INFO - Fetching company list
+2024-07-08 02:20:22,207 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 02:20:22,284 - router.company_router - INFO - Successfully fetched 107237 companies
+2024-07-08 02:29:40,735 - router.company_router - INFO - Fetching company list
+2024-07-08 02:29:40,804 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 02:29:40,805 - router.company_router - INFO - Successfully fetched 0 companies
+2024-07-08 02:29:46,660 - router.company_router - INFO - Fetching company list
+2024-07-08 02:29:46,733 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 02:29:46,735 - router.company_router - INFO - Successfully fetched 0 companies
+2024-07-08 02:31:03,889 - router.company_router - INFO - Fetching company list
+2024-07-08 02:31:03,962 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 02:31:03,964 - router.company_router - INFO - Successfully fetched 0 companies
+2024-07-08 02:31:05,556 - router.company_router - INFO - Updating company list
+2024-07-08 02:31:05,556 - service.company_service - INFO - 상장 기업 목록 업데이트 시작
+2024-07-08 02:31:05,853 - service.company_service - INFO - DART API로부터 데이터 성공적으로 받아옴
+2024-07-08 02:31:06,757 - service.company_service - INFO - 3748개의 상장 회사 정보 파싱 완료
+2024-07-08 02:31:06,828 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 02:31:06,830 - service.company_service - INFO - companies 테이블 생성 또는 확인 완료
+2024-07-08 02:31:07,195 - service.company_service - INFO - 3748개의 회사 정보 입력/업데이트 완료
+2024-07-08 02:31:07,198 - service.company_service - INFO - 데이터베이스 변경사항 커밋 완료
+2024-07-08 02:31:07,199 - service.company_service - INFO - 데이터베이스 연결 종료
+2024-07-08 02:31:07,199 - service.company_service - INFO - 상장 회사 목록 업데이트 완료
+2024-07-08 02:31:07,235 - router.company_router - INFO - Successfully updated company list. 3748 companies processed.
+2024-07-08 02:31:07,248 - router.company_router - INFO - Fetching company list
+2024-07-08 02:31:07,318 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 02:31:07,327 - router.company_router - INFO - Successfully fetched 3748 companies
+2024-07-08 02:31:28,641 - router.company_router - INFO - Fetching company list
+2024-07-08 02:31:28,715 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 02:31:28,719 - router.company_router - INFO - Successfully fetched 3748 companies

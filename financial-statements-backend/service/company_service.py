@@ -28,7 +28,7 @@ class CompanyService:
 
     @classmethod
     def update_company_list(cls):
-        logger.info("회사 목록 업데이트 시작")
+        logger.info("상장 기업 목록 업데이트 시작")
         url = "https://opendart.fss.or.kr/api/corpCode.xml"
         params = {"crtfc_key": cls.get_api_key()}
         
@@ -46,17 +46,19 @@ class CompanyService:
                     for company in root.findall('list'):
                         corp_code = company.findtext('corp_code')
                         corp_name = company.findtext('corp_name')
-                        stock_code = company.findtext('stock_code') or ''
+                        stock_code = company.findtext('stock_code')
                         modify_date = company.findtext('modify_date')
                         
-                        if modify_date:
-                            modify_date = datetime.strptime(modify_date, '%Y%m%d').strftime('%Y-%m-%d')
-                        
-                        companies.append((corp_code, corp_name, stock_code, modify_date))
+                        # 상장기업만 필터링 (stock_code가 있는 경우)
+                        if stock_code and stock_code.strip():
+                            if modify_date:
+                                modify_date = datetime.strptime(modify_date, '%Y%m%d').strftime('%Y-%m-%d')
+                            
+                            companies.append((corp_code, corp_name, stock_code, modify_date))
             
-            logger.info(f"{len(companies)}개의 회사 정보 파싱 완료")
+            logger.info(f"{len(companies)}개의 상장 회사 정보 파싱 완료")
             cls._save_to_db(companies)
-            logger.info("회사 목록 업데이트 완료")
+            logger.info("상장 회사 목록 업데이트 완료")
             return len(companies)
         except Exception as e:
             logger.error(f"회사 목록 업데이트 중 오류 발생: {e}")

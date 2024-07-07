@@ -1,16 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import { Button, Table, Text, Group, Paper, Container, Title, Alert } from '@mantine/core';
+import { Button, Table, Text, Group, Paper, Container, Title, Alert, Progress } from '@mantine/core';
 import { IconRefresh, IconAlertCircle } from '@tabler/icons-react';
+import { useInterval } from '@mantine/hooks';
+import classes from './ButtonProgress.module.css';
 
 function CompanyManagement() {
   const [companies, setCompanies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [progress, setProgress] = useState(0);
+  const [loaded, setLoaded] = useState(false);
 
-  useEffect(() => {
-    fetchCompanies();
-  }, []);
+  const interval = useInterval(
+    () =>
+      setProgress((current) => {
+        if (current < 100) {
+          return current + 1;
+        }
+        interval.stop();
+        setLoaded(true);
+        return 0;
+      }),
+    20
+  );
 
   const fetchCompanies = async () => {
     setIsLoading(true);
@@ -26,17 +39,25 @@ function CompanyManagement() {
   };
 
   const updateCompanies = async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await axios.post('http://localhost:8000/api/v1/companies/update');
-      alert(response.data.message);
-      fetchCompanies();
-    } catch (err) {
-      setError('회사 목록 업데이트에 실패했습니다.');
-      console.error('Error updating companies:', err);
+    if (loaded) {
+      setLoaded(false);
+      setProgress(0);
+      return;
     }
-    setIsLoading(false);
+    if (!interval.active) {
+      interval.start();
+      setIsLoading(true);
+      setError(null);
+      try {
+        await axios.post('http://localhost:8000/api/v1/companies/update');
+        // 실제 업데이트가 완료되면 fetchCompanies를 호출
+        await fetchCompanies();
+      } catch (err) {
+        setError('회사 목록 업데이트에 실패했습니다.');
+        console.error('Error updating companies:', err);
+      }
+      setIsLoading(false);
+    }
   };
 
   const rows = companies.map((company) => (
@@ -52,14 +73,33 @@ function CompanyManagement() {
       <Paper shadow="xs" p="md" mt="xl">
         <Group position="apart" mb="md">
           <Title order={2}>회사 관리</Title>
-          <Button
-            onClick={updateCompanies}
-            loading={isLoading}
-            leftIcon={<IconRefresh size={14} />}
-            color="blue"
-          >
-            회사 목록 업데이트
-          </Button>
+          <Group>
+            <Button
+              onClick={fetchCompanies}
+              loading={isLoading}
+              leftIcon={<IconRefresh size={14} />}
+              color="blue"
+            >
+              회사 목록 조회
+            </Button>
+            <Button
+              className={classes.button}
+              onClick={updateCompanies}
+              color={loaded ? 'teal' : 'blue'}
+            >
+              <div className={classes.label}>
+                {progress !== 0 ? '업데이트 중...' : loaded ? '업데이트 완료' : '회사 목록 업데이트'}
+              </div>
+              {progress !== 0 && (
+                <Progress
+                  value={progress}
+                  className={classes.progress}
+                  color="rgba(51, 154, 240, 0.35)"
+                  radius="sm"
+                />
+              )}
+            </Button>
+          </Group>
         </Group>
         
         {error && (
