@@ -73,7 +73,7 @@ function CompanyManagement() {
   };
 
   return (
-    <Container>
+    <Container size="xl">
       <Paper shadow="xs" p="md" mt="xl">
         <Group position="apart" mb="md">
           <Title order={2}>기업 목록 관리</Title>
@@ -96,7 +96,7 @@ function CompanyManagement() {
                 />
               )}
             </Button>
-            <Text>최근 업데이트 일시: {formatDateTime(lastUpdateTime)}</Text>
+            <Text>최근 업데이트: {formatDateTime(lastUpdateTime)}</Text>
           </Group>
         </Group>
         

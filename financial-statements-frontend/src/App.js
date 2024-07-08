@@ -1,40 +1,21 @@
-import React from 'react';
-import { MantineProvider, Grid } from '@mantine/core';
-import CompanyManagement from './features/company/CompanyManagement';
+import React, { useState } from 'react';
 import SearchComponent from './features/search/SearchComponent';
+import UpdateButton from './component/UpdateButton';
+import './App.css';
 
 function App() {
+  const [isUpdating, setIsUpdating] = useState(false);
+
   return (
-    <MantineProvider 
-      withGlobalStyles 
-      withNormalizeCSS
-      theme={{
-        components: {
-          Button: {
-            styles: {
-              rightIcon: { width: 16, height: 16 },
-              leftIcon: { width: 16, height: 16 },
-            },
-          },
-          ActionIcon: {
-            styles: {
-              root: { width: 16, height: 16 },
-            },
-          },
-        },
-      }}
-    >
-      <div className="App">
-        <Grid>
-          <Grid.Col span={6}>
-            <CompanyManagement />
-          </Grid.Col>
-          <Grid.Col span={6}>
-            <SearchComponent />
-          </Grid.Col>
-        </Grid>
-      </div>
-    </MantineProvider>
+    <div className="App">
+      <header className="App-header">
+        <h1>기업 재무제표 검색</h1>
+        <div className="search-and-update">
+          <SearchComponent />
+          <UpdateButton isUpdating={isUpdating} setIsUpdating={setIsUpdating} />
+        </div>
+      </header>
+    </div>
   );
 }
 

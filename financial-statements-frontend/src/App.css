@@ -2,52 +2,31 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   font-size: calc(10px + 2vmin);
   color: white;
+  padding-top: 50px;
 }
 
-.App-link {
-  color: #61dafb;
+h1 {
+  margin-bottom: 20px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.search-and-update {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.mantine-Button-rightIcon,
-.mantine-Button-leftIcon,
-.mantine-ActionIcon-root,
-.mantine-Select-icon,
-.mantine-Checkbox-icon {
-  width: 16px !important;
-  height: 16px !important;
-}
-
-/* 모든 SVG 아이콘에 대한 크기 제한 */
-svg {
-  max-width: 16px;
-  max-height: 16px;
+.search-and-update > * {
+  margin: 0 10px;
 }

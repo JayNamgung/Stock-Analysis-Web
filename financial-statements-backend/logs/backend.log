@@ -3936,3 +3936,75 @@ psycopg2.errors.InvalidColumnReference: 오류:  ON CONFLICT 절을 사용하는 경우, u
 2024-07-08 20:00:18,689 - router.company_router - INFO - Fetching company list
 2024-07-08 20:00:18,768 - service.company_service - INFO - 데이터베이스 연결 성공
 2024-07-08 20:00:18,783 - router.company_router - INFO - Successfully fetched 3748 companies
+2024-07-08 20:03:42,107 - router.company_router - INFO - Fetching company list
+2024-07-08 20:03:42,182 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 20:03:42,197 - router.company_router - INFO - Successfully fetched 3748 companies
+2024-07-08 20:03:56,290 - router.company_router - INFO - Fetching company list
+2024-07-08 20:03:56,365 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 20:03:56,380 - router.company_router - INFO - Successfully fetched 3748 companies
+2024-07-08 20:04:17,860 - router.company_router - INFO - Fetching last update time
+2024-07-08 20:04:17,937 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 20:04:17,939 - router.company_router - INFO - Successfully fetched last update time: 2024-07-08 19:55:35.968552
+2024-07-08 20:04:28,459 - router.company_router - INFO - Fetching company list
+2024-07-08 20:04:28,530 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 20:04:28,544 - router.company_router - INFO - Successfully fetched 3748 companies
+2024-07-08 20:04:46,531 - router.company_router - INFO - Fetching last update time
+2024-07-08 20:04:46,607 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 20:04:46,610 - router.company_router - INFO - Successfully fetched last update time: 2024-07-08 19:55:35.968552
+2024-07-08 20:04:46,615 - router.company_router - INFO - Fetching company list
+2024-07-08 20:04:46,796 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 20:04:46,811 - router.company_router - INFO - Successfully fetched 3748 companies
+2024-07-08 20:04:46,836 - router.company_router - INFO - Fetching last update time
+2024-07-08 20:04:46,914 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 20:04:46,916 - router.company_router - INFO - Successfully fetched last update time: 2024-07-08 19:55:35.968552
+2024-07-08 20:04:46,918 - router.company_router - INFO - Fetching company list
+2024-07-08 20:04:46,995 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 20:04:47,010 - router.company_router - INFO - Successfully fetched 3748 companies
+2024-07-08 20:04:49,380 - router.company_router - INFO - Fetching last update time
+2024-07-08 20:04:49,460 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 20:04:49,461 - router.company_router - INFO - Successfully fetched last update time: 2024-07-08 19:55:35.968552
+2024-07-08 20:04:49,467 - router.company_router - INFO - Fetching last update time
+2024-07-08 20:04:49,540 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 20:04:49,542 - router.company_router - INFO - Successfully fetched last update time: 2024-07-08 19:55:35.968552
+2024-07-08 20:04:49,543 - router.company_router - INFO - Fetching company list
+2024-07-08 20:04:49,616 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 20:04:49,631 - router.company_router - INFO - Successfully fetched 3748 companies
+2024-07-08 20:04:49,660 - router.company_router - INFO - Fetching company list
+2024-07-08 20:04:49,738 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 20:04:49,754 - router.company_router - INFO - Successfully fetched 3748 companies
+2024-07-08 20:04:50,906 - router.company_router - INFO - Fetching last update time
+2024-07-08 20:04:50,983 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 20:04:50,985 - router.company_router - INFO - Successfully fetched last update time: 2024-07-08 19:55:35.968552
+2024-07-08 20:04:50,990 - router.company_router - INFO - Fetching last update time
+2024-07-08 20:04:51,058 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 20:04:51,062 - router.company_router - INFO - Successfully fetched last update time: 2024-07-08 19:55:35.968552
+2024-07-08 20:04:51,063 - router.company_router - INFO - Fetching company list
+2024-07-08 20:04:51,132 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 20:04:51,147 - router.company_router - INFO - Successfully fetched 3748 companies
+2024-07-08 20:04:51,176 - router.company_router - INFO - Fetching company list
+2024-07-08 20:04:51,248 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 20:04:51,264 - router.company_router - INFO - Successfully fetched 3748 companies
+2024-07-08 20:04:51,782 - router.company_router - INFO - Fetching last update time
+2024-07-08 20:04:51,862 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 20:04:51,864 - router.company_router - INFO - Successfully fetched last update time: 2024-07-08 19:55:35.968552
+2024-07-08 20:04:51,870 - router.company_router - INFO - Fetching last update time
+2024-07-08 20:04:51,942 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 20:04:51,944 - router.company_router - INFO - Successfully fetched last update time: 2024-07-08 19:55:35.968552
+2024-07-08 20:04:51,946 - router.company_router - INFO - Fetching company list
+2024-07-08 20:04:52,015 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 20:04:52,031 - router.company_router - INFO - Successfully fetched 3748 companies
+2024-07-08 20:04:52,062 - router.company_router - INFO - Fetching company list
+2024-07-08 20:04:52,244 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 20:04:52,262 - router.company_router - INFO - Successfully fetched 3748 companies
+2024-07-08 20:05:28,018 - router.company_router - INFO - Fetching last update time
+2024-07-08 20:05:28,105 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 20:05:28,107 - router.company_router - INFO - Successfully fetched last update time: 2024-07-08 19:55:35.968552
+2024-07-08 20:05:28,113 - router.company_router - INFO - Fetching last update time
+2024-07-08 20:05:28,194 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 20:05:28,197 - router.company_router - INFO - Successfully fetched last update time: 2024-07-08 19:55:35.968552
+2024-07-08 20:05:28,202 - router.company_router - INFO - Fetching company list
+2024-07-08 20:05:28,283 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 20:05:28,305 - router.company_router - INFO - Successfully fetched 3748 companies
+2024-07-08 20:05:28,346 - router.company_router - INFO - Fetching company list
+2024-07-08 20:05:28,433 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 20:05:28,448 - router.company_router - INFO - Successfully fetched 3748 companies
