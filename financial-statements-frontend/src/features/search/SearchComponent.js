@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Autocomplete, Select, Button, Group, Text, Container, Paper } from '@mantine/core';
 
 function SearchComponent() {
   const [companyName, setCompanyName] = useState('');
@@ -9,8 +10,7 @@ function SearchComponent() {
   const [fsDiv, setFsDiv] = useState('OFS');
   const [result, setResult] = useState(null);
   const [error, setError] = useState('');
-  const [companies, setCompanies] = useState([]);
-  const [isLoadingCompanies, setIsLoadingCompanies] = useState(false);
+  const [companyOptions, setCompanyOptions] = useState([]); // 초기값을 빈 배열로 설정
 
   const reprtCodeOptions = [
     { value: '11013', label: '1분기보고서' },
@@ -24,25 +24,37 @@ function SearchComponent() {
     return { value: year.toString(), label: year.toString() };
   });
 
+  useEffect(() => {
+    fetchCompanies();
+  }, []);
+
   const fetchCompanies = async () => {
-    if (companies.length > 0) return; // 이미 회사 목록이 있다면 다시 불러오지 않음
-    setIsLoadingCompanies(true);
     try {
       const response = await axios.get('http://localhost:8000/api/v1/companies');
-      console.log('API response:', response.data);
-      setCompanies(response.data);
+      console.log('API response:', response.data); // 응답 데이터 로깅
+      if (Array.isArray(response.data) && response.data.length > 0) {
+        const options = response.data.map(company => ({
+          value: company.corp_code,
+          label: company.corp_name
+        }));
+        setCompanyOptions(options);
+      } else {
+        console.error('Unexpected API response format:', response.data);
+        setCompanyOptions([]); // 빈 배열로 설정
+      }
     } catch (error) {
-      console.error('Error fetching companies:', error.response ? error.response.data : error.message);
-      setError('기업 목록을 불러오는데 실패했습니다.');
+      console.error('Error fetching companies:', error);
+      setCompanyOptions([]); // 오류 시 빈 배열로 설정
     }
-    setIsLoadingCompanies(false);
   };
 
-  const handleCompanyChange = (e) => {
-    const selectedCompany = companies.find(company => company.corp_name === e.target.value);
-    setCompanyName(e.target.value);
+  const handleCompanyChange = (value) => {
+    setCompanyName(value);
+    const selectedCompany = companyOptions.find(company => company.label === value);
     if (selectedCompany) {
-      setCorpCode(selectedCompany.corp_code);
+      setCorpCode(selectedCompany.value);
+    } else {
+      setCorpCode('');
     }
   };
 
@@ -54,7 +66,6 @@ function SearchComponent() {
         setError('모든 필드를 선택해주세요.');
         return;
       }
-      console.log(`Sending request for corp_code: ${corpCode}, bsns_year: ${bsnsYear}, reprt_code: ${reprtCode}, fs_div: ${fsDiv}`);
       const url = `http://localhost:8000/api/v1/financial-statements/${corpCode}`;
       const response = await axios.get(url, {
         params: {
@@ -63,7 +74,6 @@ function SearchComponent() {
           fs_div: fsDiv
         }
       });
-      console.log('Response:', response.data);
       setResult(response.data);
     } catch (err) {
       console.error('Error details:', err.response ? err.response.data : err.message);
@@ -72,58 +82,59 @@ function SearchComponent() {
   };
 
   return (
-    <div>
-      <h2>기업 재무제표 검색</h2>
-      <select
-        value={companyName}
-        onChange={handleCompanyChange}
-        onClick={fetchCompanies}
-      >
-        <option value="">기업을 선택하세요</option>
-        {isLoadingCompanies ? (
-          <option disabled>로딩 중...</option>
-        ) : (
-          companies.map(company => (
-            <option key={company.corp_code} value={company.corp_name}>{company.corp_name}</option>
-          ))
+    <Container>
+      <Paper shadow="xs" p="md">
+        <h2>기업 재무제표 검색</h2>
+        <Group grow>
+          <Autocomplete
+            label="기업명"
+            placeholder="기업명을 입력하세요"
+            data={Array.isArray(companyOptions) ? companyOptions : []}
+            value={companyName}
+            onChange={handleCompanyChange}
+            filter={(value, item) => {
+              if (!item || !item.label) return false;
+              return item.label.toLowerCase().includes(value.toLowerCase().trim());
+            }}
+            nothingFound="검색 결과가 없습니다"
+          />
+          <Select
+            label="사업연도"
+            placeholder="사업연도 선택"
+            data={yearOptions}
+            value={bsnsYear}
+            onChange={setBsnsYear}
+          />
+          <Select
+            label="보고서 종류"
+            placeholder="보고서 선택"
+            data={reprtCodeOptions}
+            value={reprtCode}
+            onChange={setReprtCode}
+          />
+          <Select
+            label="재무제표 구분"
+            placeholder="재무제표 구분 선택"
+            data={[
+              { value: 'OFS', label: '개별' },
+              { value: 'CFS', label: '연결' }
+            ]}
+            value={fsDiv}
+            onChange={setFsDiv}
+          />
+        </Group>
+        <Button onClick={handleSearch} mt="md" fullWidth>검색</Button>
+
+        {error && <Text color="red" mt="md">{error}</Text>}
+
+        {result && (
+          <Paper mt="xl" p="md">
+            <h3>{result.corp_name} 재무제표</h3>
+            <pre>{JSON.stringify(result, null, 2)}</pre>
+          </Paper>
         )}
-      </select>
-      <select
-        value={bsnsYear}
-        onChange={(e) => setBsnsYear(e.target.value)}
-      >
-        <option value="">사업연도 선택</option>
-        {yearOptions.map(year => (
-          <option key={year.value} value={year.value}>{year.label}</option>
-        ))}
-      </select>
-      <select
-        value={reprtCode}
-        onChange={(e) => setReprtCode(e.target.value)}
-      >
-        <option value="">보고서 선택</option>
-        {reprtCodeOptions.map(option => (
-          <option key={option.value} value={option.value}>{option.label}</option>
-        ))}
-      </select>
-      <select
-        value={fsDiv}
-        onChange={(e) => setFsDiv(e.target.value)}
-      >
-        <option value="OFS">개별</option>
-        <option value="CFS">연결</option>
-      </select>
-      <button onClick={handleSearch}>검색</button>
-
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-
-      {result && (
-        <div>
-          <h3>{result.corp_name} 재무제표</h3>
-          <pre>{JSON.stringify(result, null, 2)}</pre>
-        </div>
-      )}
-    </div>
+      </Paper>
+    </Container>
   );
 }
 

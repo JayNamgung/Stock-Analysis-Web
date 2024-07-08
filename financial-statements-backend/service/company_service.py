@@ -109,21 +109,48 @@ class CompanyService:
 
     @classmethod
     def _save_to_db(cls, companies):
-        cls.ensure_database_schema()
         conn = cls._get_db_connection()
         cur = conn.cursor()
         
         try:
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS companies (
+                    corp_code TEXT PRIMARY KEY,
+                    corp_name TEXT NOT NULL,
+                    stock_code TEXT,
+                    modify_date DATE,
+                    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+            """)
+            
+            # 중복 제거를 위한 임시 테이블 생성
+            cur.execute("""
+                CREATE TEMP TABLE temp_companies (
+                    corp_code TEXT,
+                    corp_name TEXT,
+                    stock_code TEXT,
+                    modify_date DATE
+                ) ON COMMIT DROP
+            """)
+            
+            # 임시 테이블에 데이터 삽입 (중복 제거)
             cur.executemany("""
+                INSERT INTO temp_companies (corp_code, corp_name, stock_code, modify_date)
+                VALUES (%s, %s, %s, %s)
+                ON CONFLICT (corp_code) DO NOTHING
+            """, companies)
+            
+            # 메인 테이블 업데이트
+            cur.execute("""
                 INSERT INTO companies (corp_code, corp_name, stock_code, modify_date, last_updated)
-                VALUES (%s, %s, %s, %s, CURRENT_TIMESTAMP)
+                SELECT corp_code, corp_name, stock_code, modify_date, CURRENT_TIMESTAMP
+                FROM temp_companies
                 ON CONFLICT (corp_code) DO UPDATE
                 SET corp_name = EXCLUDED.corp_name,
                     stock_code = EXCLUDED.stock_code,
                     modify_date = EXCLUDED.modify_date,
                     last_updated = CURRENT_TIMESTAMP
-            """, companies)
-            logger.info(f"{len(companies)}개의 회사 정보 입력/업데이트 완료")
+            """)
 
             conn.commit()
             logger.info("데이터베이스 변경사항 커밋 완료")
@@ -148,6 +175,23 @@ class CompanyService:
             return last_update
         except psycopg2.Error as e:
             logger.error(f"최근 업데이트 시간 조회 중 오류 발생: {e}")
+            raise
+        finally:
+            cur.close()
+            conn.close()
+
+    @classmethod
+    def get_corp_codes(cls):
+        cls.ensure_database_schema()
+        conn = cls._get_db_connection()
+        cur = conn.cursor()
+        
+        try:
+            cur.execute("SELECT DISTINCT corp_code, corp_name, stock_code FROM companies WHERE 1=1 ORDER BY corp_name")
+            companies = cur.fetchall()
+            return [{"corp_code": code, "corp_name": name, "stock_code": stock_code} for code, name, stock_code in companies]
+        except psycopg2.Error as e:
+            logger.error(f"기업 목록 조회 중 오류 발생: {e}")
             raise
         finally:
             cur.close()
