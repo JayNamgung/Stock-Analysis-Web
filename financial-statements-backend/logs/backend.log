@@ -4030,3 +4030,4 @@ psycopg2.errors.InvalidColumnReference: 오류:  ON CONFLICT 절을 사용하는 경우, u
 2024-07-08 20:58:26,341 - router.company_router - INFO - Successfully updated company list. 3748 companies processed.
 2024-07-08 21:09:15,146 - router.company_router - INFO - Fetching company list
 2024-07-08 21:09:15,223 - service.company_service - INFO - 데이터베이스 연결 성공
+2024-07-08 21:09:15,239 - router.company_router - INFO - Successfully fetched 3748 companies
