@@ -41,21 +41,23 @@ class CompanyService:
                     corp_code TEXT PRIMARY KEY,
                     corp_name TEXT NOT NULL,
                     stock_code TEXT,
-                    modify_date DATE
+                    modify_date DATE,
+                    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             """)
             
             # Check if last_updated column exists, if not, add it
             cur.execute("""
-                SELECT column_name 
-                FROM information_schema.columns 
-                WHERE table_name='companies' AND column_name='last_updated'
+                DO $$
+                BEGIN
+                    IF NOT EXISTS (
+                        SELECT 1 FROM pg_constraint 
+                        WHERE conname = 'companies_corp_code_key'
+                    ) THEN
+                        ALTER TABLE companies ADD CONSTRAINT companies_corp_code_key UNIQUE (corp_code);
+                    END IF;
+                END $$;
             """)
-            if cur.fetchone() is None:
-                cur.execute("""
-                    ALTER TABLE companies
-                    ADD COLUMN last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                """)
             
             conn.commit()
             logger.info("companies 테이블 스키마 확인 및 업데이트 완료")
@@ -113,6 +115,7 @@ class CompanyService:
         cur = conn.cursor()
         
         try:
+            # 메인 테이블 생성 (이미 존재하면 무시)
             cur.execute("""
                 CREATE TABLE IF NOT EXISTS companies (
                     corp_code TEXT PRIMARY KEY,
@@ -123,21 +126,20 @@ class CompanyService:
                 )
             """)
             
-            # 중복 제거를 위한 임시 테이블 생성
+            # 임시 테이블 생성
             cur.execute("""
                 CREATE TEMP TABLE temp_companies (
-                    corp_code TEXT,
-                    corp_name TEXT,
+                    corp_code TEXT PRIMARY KEY,
+                    corp_name TEXT NOT NULL,
                     stock_code TEXT,
                     modify_date DATE
                 ) ON COMMIT DROP
             """)
             
-            # 임시 테이블에 데이터 삽입 (중복 제거)
+            # 임시 테이블에 데이터 삽입
             cur.executemany("""
                 INSERT INTO temp_companies (corp_code, corp_name, stock_code, modify_date)
                 VALUES (%s, %s, %s, %s)
-                ON CONFLICT (corp_code) DO NOTHING
             """, companies)
             
             # 메인 테이블 업데이트

@@ -36,3 +36,18 @@
     transform: rotate(360deg);
   }
 }
+
+.mantine-Button-rightIcon,
+.mantine-Button-leftIcon,
+.mantine-ActionIcon-root,
+.mantine-Select-icon,
+.mantine-Checkbox-icon {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+/* 모든 SVG 아이콘에 대한 크기 제한 */
+svg {
+  max-width: 16px;
+  max-height: 16px;
+}
