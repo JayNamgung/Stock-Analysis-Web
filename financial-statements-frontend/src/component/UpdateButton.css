@@ -1,23 +1,58 @@
+.search-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.search-input {
+  flex: 1;
+  height: 40px;
+  padding: 5px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px 0 0 5px;
+  border-right: none;
+}
+
 .update-button {
-    padding: 10px 15px;
-    font-size: 14px;
-    color: white;
-    background-color: #4CAF50;
-    border: none;
+  padding: 10px 15px;
+  font-size: 14px;
+  color: white;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  height: 40px;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+.update-button:hover {
+  background-color: #45a049;
+}
+
+.update-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.update-button.updating {
+  background-color: #ffa500;
+}
+
+@media (max-width: 600px) {
+  .search-container {
+    flex-direction: column;
+  }
+  
+  .search-input, .update-button {
+    width: 100%;
     border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
   }
   
-  .update-button:hover {
-    background-color: #45a049;
+  .search-input {
+    border-right: 1px solid #ccc;
+    margin-bottom: 10px;
   }
-  
-  .update-button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-  }
-  
-  .update-button.updating {
-    background-color: #ffa500;
-  }
+}
