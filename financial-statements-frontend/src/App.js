@@ -9,7 +9,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>기업 재무제표 검색</h1>
+        <h1>SeeStock</h1>
         <div className="search-and-update">
           <SearchComponent />
           <UpdateButton isUpdating={isUpdating} setIsUpdating={setIsUpdating} />
