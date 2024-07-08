@@ -28,7 +28,7 @@ function SearchComponent() {
     if (companies.length > 0) return; // 이미 회사 목록이 있다면 다시 불러오지 않음
     setIsLoadingCompanies(true);
     try {
-      const response = await axios.get('http://localhost:8000/api/v1/financial-statements/companies');
+      const response = await axios.get('http://localhost:8000/api/v1/companies');
       console.log('API response:', response.data);
       setCompanies(response.data);
     } catch (error) {
@@ -39,10 +39,10 @@ function SearchComponent() {
   };
 
   const handleCompanyChange = (e) => {
-    const selectedCompany = companies.find(company => company.name === e.target.value);
+    const selectedCompany = companies.find(company => company.corp_name === e.target.value);
     setCompanyName(e.target.value);
     if (selectedCompany) {
-      setCorpCode(selectedCompany.code);
+      setCorpCode(selectedCompany.corp_code);
     }
   };
 
@@ -84,7 +84,7 @@ function SearchComponent() {
           <option disabled>로딩 중...</option>
         ) : (
           companies.map(company => (
-            <option key={company.code} value={company.name}>{company.name}</option>
+            <option key={company.corp_code} value={company.corp_name}>{company.corp_name}</option>
           ))
         )}
       </select>

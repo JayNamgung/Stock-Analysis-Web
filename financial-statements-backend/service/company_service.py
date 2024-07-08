@@ -10,6 +10,7 @@ from utils.config_loader import load_api_key, load_db_config
 logger = logging.getLogger(__name__)
 
 class CompanyService:
+    schema_updated = False
 
     @staticmethod
     def _get_db_connection():
@@ -27,8 +28,50 @@ class CompanyService:
         return load_api_key("OPEN_DART_API_KEY")
 
     @classmethod
+    def ensure_database_schema(cls):
+        if cls.schema_updated:
+            return
+
+        conn = cls._get_db_connection()
+        cur = conn.cursor()
+        
+        try:
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS companies (
+                    corp_code TEXT PRIMARY KEY,
+                    corp_name TEXT NOT NULL,
+                    stock_code TEXT,
+                    modify_date DATE
+                )
+            """)
+            
+            # Check if last_updated column exists, if not, add it
+            cur.execute("""
+                SELECT column_name 
+                FROM information_schema.columns 
+                WHERE table_name='companies' AND column_name='last_updated'
+            """)
+            if cur.fetchone() is None:
+                cur.execute("""
+                    ALTER TABLE companies
+                    ADD COLUMN last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                """)
+            
+            conn.commit()
+            logger.info("companies 테이블 스키마 확인 및 업데이트 완료")
+            cls.schema_updated = True
+        except psycopg2.Error as e:
+            logger.error(f"데이터베이스 스키마 확인 중 오류 발생: {e}")
+            conn.rollback()
+            raise
+        finally:
+            cur.close()
+            conn.close()
+
+    @classmethod
     def update_company_list(cls):
         logger.info("상장 기업 목록 업데이트 시작")
+        cls.ensure_database_schema()  # 데이터베이스 스키마 확인 및 업데이트
         url = "https://opendart.fss.or.kr/api/corpCode.xml"
         params = {"crtfc_key": cls.get_api_key()}
         
@@ -66,27 +109,19 @@ class CompanyService:
 
     @classmethod
     def _save_to_db(cls, companies):
+        cls.ensure_database_schema()
         conn = cls._get_db_connection()
         cur = conn.cursor()
         
         try:
-            cur.execute("""
-                CREATE TABLE IF NOT EXISTS companies (
-                    corp_code TEXT PRIMARY KEY,
-                    corp_name TEXT NOT NULL,
-                    stock_code TEXT,
-                    modify_date DATE
-                )
-            """)
-            logger.info("companies 테이블 생성 또는 확인 완료")
-
             cur.executemany("""
-                INSERT INTO companies (corp_code, corp_name, stock_code, modify_date)
-                VALUES (%s, %s, %s, %s)
+                INSERT INTO companies (corp_code, corp_name, stock_code, modify_date, last_updated)
+                VALUES (%s, %s, %s, %s, CURRENT_TIMESTAMP)
                 ON CONFLICT (corp_code) DO UPDATE
                 SET corp_name = EXCLUDED.corp_name,
                     stock_code = EXCLUDED.stock_code,
-                    modify_date = EXCLUDED.modify_date
+                    modify_date = EXCLUDED.modify_date,
+                    last_updated = CURRENT_TIMESTAMP
             """, companies)
             logger.info(f"{len(companies)}개의 회사 정보 입력/업데이트 완료")
 
@@ -102,14 +137,18 @@ class CompanyService:
             logger.info("데이터베이스 연결 종료")
 
     @classmethod
-    def get_corp_codes(cls):
+    def get_last_update_time(cls):
+        cls.ensure_database_schema()
         conn = cls._get_db_connection()
         cur = conn.cursor()
         
-        cur.execute("SELECT corp_code, corp_name, stock_code FROM companies")
-        companies = cur.fetchall()
-        
-        cur.close()
-        conn.close()
-        
-        return [{"corp_code": code, "corp_name": name, "stock_code": stock_code} for code, name, stock_code in companies]
+        try:
+            cur.execute("SELECT MAX(last_updated) FROM companies")
+            last_update = cur.fetchone()[0]
+            return last_update
+        except psycopg2.Error as e:
+            logger.error(f"최근 업데이트 시간 조회 중 오류 발생: {e}")
+            raise
+        finally:
+            cur.close()
+            conn.close()

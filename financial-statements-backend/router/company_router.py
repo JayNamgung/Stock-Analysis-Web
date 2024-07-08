@@ -9,17 +9,6 @@ router = APIRouter(
     tags=["company list"]
 )
 
-@router.get("/")
-async def get_companies():
-    try:
-        logger.info("Fetching company list")
-        companies = CompanyService.get_corp_codes()
-        logger.info(f"Successfully fetched {len(companies)} companies")
-        return companies
-    except Exception as e:
-        logger.error(f"Error fetching company list: {str(e)}", exc_info=True)
-        raise HTTPException(status_code=500, detail=str(e))
-
 @router.post("/update")
 async def update_companies():
     try:
@@ -29,4 +18,15 @@ async def update_companies():
         return {"message": f"Company list updated successfully. {updated_count} companies processed."}
     except Exception as e:
         logger.error(f"Error updating company list: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+    
+@router.get("/last-update")
+async def get_last_update_time():
+    try:
+        logger.info("Fetching last update time")
+        last_update = CompanyService.get_last_update_time()
+        logger.info(f"Successfully fetched last update time: {last_update}")
+        return {"last_update": last_update}
+    except Exception as e:
+        logger.error(f"Error fetching last update time: {str(e)}", exc_info=True)
         raise HTTPException(status_code=500, detail=str(e))
