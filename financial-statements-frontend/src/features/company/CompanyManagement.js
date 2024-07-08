@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import axios from 'axios';
 import { Button, Text, Group, Paper, Container, Title, Alert, Progress, TextInput, Table } from '@mantine/core';
 import { IconAlertCircle, IconSearch } from '@tabler/icons-react';
@@ -13,7 +13,7 @@ function CompanyManagement() {
   const [lastUpdateTime, setLastUpdateTime] = useState(null);
   const [companies, setCompanies] = useState([]);
   const [searchValue, setSearchValue] = useState('');
-  const [filteredCompanies, setFilteredCompanies] = useState([]);
+
 
   const interval = useInterval(
     () =>
@@ -50,42 +50,41 @@ function CompanyManagement() {
     }
   };
 
-  const fetchCompanies = async () => {
+  const fetchCompanies = useCallback(async () => {
+    setIsLoading(true);
     try {
       const response = await axios.get('http://localhost:8000/api/v1/companies');
       if (Array.isArray(response.data)) {
         setCompanies(response.data);
-        setFilteredCompanies(response.data);
       } else {
         console.error('Received data is not an array:', response.data);
         setCompanies([]);
-        setFilteredCompanies([]);
       }
     } catch (err) {
       console.error('Error fetching companies:', err);
       setError('기업 목록을 불러오는데 실패했습니다.');
       setCompanies([]);
-      setFilteredCompanies([]);
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchLastUpdateTime();
     fetchCompanies();
-  }, []);
+  }, [fetchCompanies]);
 
-  useEffect(() => {
+  const filteredCompanies = useMemo(() => {
     const lowercasedValue = searchValue.toLowerCase().trim();
-    if (lowercasedValue === '') {
-      setFilteredCompanies(companies);
-    } else {
-      const filtered = companies.filter(company => 
-        company.corp_name.toLowerCase().includes(lowercasedValue) ||
-        company.stock_code.toLowerCase().includes(lowercasedValue)
-      );
-      setFilteredCompanies(filtered);
-    }
-  }, [searchValue, companies]);
+    return companies.filter(company => 
+      company.corp_name.toLowerCase().includes(lowercasedValue) ||
+      company.stock_code.toLowerCase().includes(lowercasedValue)
+    );
+  }, [companies, searchValue]);
+  
+  const handleSearchChange = (event) => {
+    setSearchValue(event.currentTarget.value);
+  };
 
   const updateCompanies = async () => {
     if (loaded) {

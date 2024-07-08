@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import axios from 'axios';
-import { Autocomplete, Select, Button, Group, Text, Container, Paper } from '@mantine/core';
+import { Autocomplete, Select, Button, Group, Text, Container, Paper, Loader } from '@mantine/core';
 
-function SearchComponent() {
+const SearchComponent = React.memo(() => {
   const [companyName, setCompanyName] = useState('');
   const [corpCode, setCorpCode] = useState('');
   const [bsnsYear, setBsnsYear] = useState('');
@@ -10,75 +10,88 @@ function SearchComponent() {
   const [fsDiv, setFsDiv] = useState('OFS');
   const [result, setResult] = useState(null);
   const [error, setError] = useState('');
-  const [companyOptions, setCompanyOptions] = useState([]); // 초기값을 빈 배열로 설정
+  const [companyOptions, setCompanyOptions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const reprtCodeOptions = [
+  const reprtCodeOptions = useMemo(() => [
     { value: '11013', label: '1분기보고서' },
     { value: '11012', label: '반기보고서' },
     { value: '11014', label: '3분기보고서' },
     { value: '11011', label: '사업보고서' }
-  ];
+  ], []);
 
-  const yearOptions = Array.from({ length: 10 }, (_, i) => {
-    const year = new Date().getFullYear() - i;
-    return { value: year.toString(), label: year.toString() };
-  });
-
-  useEffect(() => {
-    fetchCompanies();
+  const yearOptions = useMemo(() => {
+    const currentYear = new Date().getFullYear();
+    return Array.from({ length: 10 }, (_, i) => {
+      const year = currentYear - i;
+      return { value: year.toString(), label: year.toString() };
+    });
   }, []);
 
-  const fetchCompanies = async () => {
+  const transformCompanyData = useCallback((companies) => {
+    return companies
+      .filter(company => company && company.corp_name && company.stock_code)
+      .map(company => ({
+        value: company.stock_code,
+        label: company.corp_name
+      }));
+  }, []);
+
+  const fetchCompanies = useCallback(async () => {
     try {
       const response = await axios.get('http://localhost:8000/api/v1/companies');
-      console.log('API response:', response.data); // 응답 데이터 로깅
       if (Array.isArray(response.data) && response.data.length > 0) {
-        const options = response.data.map(company => ({
-          value: company.corp_code,
-          label: company.corp_name
-        }));
+        const options = transformCompanyData(response.data);
         setCompanyOptions(options);
       } else {
-        console.error('Unexpected API response format:', response.data);
-        setCompanyOptions([]); // 빈 배열로 설정
+        setCompanyOptions([]);
       }
     } catch (error) {
       console.error('Error fetching companies:', error);
-      setCompanyOptions([]); // 오류 시 빈 배열로 설정
+      setError('기업 목록을 불러오는데 실패했습니다.');
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }, [transformCompanyData]);
 
-  const handleCompanyChange = (value) => {
+  useEffect(() => {
+    fetchCompanies();
+  }, [fetchCompanies]);
+  
+  useEffect(() => {
+    console.log('companyOptions:', companyOptions);
+  }, [companyOptions]);
+
+  const handleCompanyChange = useCallback((value) => {
     setCompanyName(value);
     const selectedCompany = companyOptions.find(company => company.label === value);
-    if (selectedCompany) {
-      setCorpCode(selectedCompany.value);
-    } else {
-      setCorpCode('');
-    }
-  };
+    setCorpCode(selectedCompany ? selectedCompany.value : '');
+  }, [companyOptions]);
 
-  const handleSearch = async () => {
+  const handleSearch = useCallback(async () => {
+    if (!corpCode || !bsnsYear || !reprtCode) {
+      setError('모든 필드를 선택해주세요.');
+      return;
+    }
+    setError('');
+    setResult(null);
     try {
-      setError('');
-      setResult(null);
-      if (!corpCode || !bsnsYear || !reprtCode) {
-        setError('모든 필드를 선택해주세요.');
-        return;
-      }
       const url = `http://localhost:8000/api/v1/financial-statements/${corpCode}`;
       const response = await axios.get(url, {
-        params: {
-          bsns_year: bsnsYear,
-          reprt_code: reprtCode,
-          fs_div: fsDiv
-        }
+        params: { bsns_year: bsnsYear, reprt_code: reprtCode, fs_div: fsDiv }
       });
       setResult(response.data);
     } catch (err) {
       console.error('Error details:', err.response ? err.response.data : err.message);
       setError('데이터를 불러오는 데 실패했습니다. 입력 값을 확인해주세요.');
     }
+  }, [corpCode, bsnsYear, reprtCode, fsDiv]);
+
+  const filterCompanies = (value, item) => {
+    if (!item || !item.label) {
+      return false;
+    }
+    return item.label.toLowerCase().includes(value.toLowerCase().trim());
   };
 
   return (
@@ -86,18 +99,19 @@ function SearchComponent() {
       <Paper shadow="xs" p="md">
         <h2>기업 재무제표 검색</h2>
         <Group grow>
-          <Autocomplete
-            label="기업명"
-            placeholder="기업명을 입력하세요"
-            data={Array.isArray(companyOptions) ? companyOptions : []}
-            value={companyName}
-            onChange={handleCompanyChange}
-            filter={(value, item) => {
-              if (!item || !item.label) return false;
-              return item.label.toLowerCase().includes(value.toLowerCase().trim());
-            }}
-            nothingFound="검색 결과가 없습니다"
-          />
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <Autocomplete
+              label="기업명"
+              placeholder="기업명을 입력하세요"
+              data={companyOptions}
+              value={companyName}
+              onChange={handleCompanyChange}
+              filter={filterCompanies}
+              nothingFound="검색 결과가 없습니다"
+            />
+          )}
           <Select
             label="사업연도"
             placeholder="사업연도 선택"
@@ -136,6 +150,6 @@ function SearchComponent() {
       </Paper>
     </Container>
   );
-}
+});
 
 export default SearchComponent;
